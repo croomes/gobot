@@ -584,20 +584,20 @@ func TestHT16K33Driver_WriteNumber(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		{
-			name: "0",
-			args: args{
-				n: 0,
-			},
-			want: "0000",
-		},
 		// {
-		// 	name: "10",
+		// 	name: "0",
 		// 	args: args{
-		// 		n: 10,
+		// 		n: 0,
 		// 	},
-		// 	want: []byte{0x4F, 0x00},
+		// 	want: "0000",
 		// },
+		{
+			name: "10",
+			args: args{
+				n: 10,
+			},
+			want: []byte{0x4F, 0x00},
+		},
 		// {
 		// 	name: "100",
 		// 	args: args{

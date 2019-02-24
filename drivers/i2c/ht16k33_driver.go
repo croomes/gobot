@@ -224,7 +224,8 @@ func (h *HT16K33Driver) WriteDigit(pos uint8, d int) error {
 	return h.connection.WriteWordData(pos*2, digit[d])
 }
 
-// WriteNumber displays a 4-digit number on the panel.
+// WriteNumber displays a 4-digit number on the panel.  Leading zeros are not
+// shown.
 func (h *HT16K33Driver) WriteNumber(n int) error {
 
 	digits, err := splitNumberIntoDigits(n)
@@ -232,7 +233,23 @@ func (h *HT16K33Driver) WriteNumber(n int) error {
 		return err
 	}
 
+	// Clear the panel.
+	if err := h.Clear(); err != nil {
+		return err
+	}
+
+	foundDigit := false
 	for pos, digit := range digits {
+
+		if digit > 0 {
+			foundDigit = true
+		}
+
+		// Skip leading zeros
+		if !foundDigit {
+			continue
+		}
+
 		if err := h.WriteDigit(uint8(pos), digit); err != nil {
 			return err
 		}
